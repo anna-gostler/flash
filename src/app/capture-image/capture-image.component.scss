@@ -1,0 +1,13 @@
+webcam {
+  height: 400px;
+  width: 100%;
+}
+
+.capture-image {
+  width: 100%;
+  text-align: center;
+}
+
+.captured-image-not-present {
+  display: none !important;
+}

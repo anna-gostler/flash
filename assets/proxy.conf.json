@@ -1,9 +1,0 @@
-{
-    "/api": {
-      "target": "https://jisho.org",
-      "secure": true,
-      "changeOrigin": true,
-      "logLevel": "debug"
-    }
-  }
-  

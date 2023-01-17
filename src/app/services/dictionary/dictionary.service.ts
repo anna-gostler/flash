@@ -10,7 +10,7 @@ export class DictionaryService {
 
   public getEntry(keyword: string) {
     return this.http.get<JishoDictionaryEntry[]>(
-      `http://localhost:5000/dict?keyword=${keyword}`
+      `http://localhost:8080/dict?keyword=${keyword}`
     );
   }
 }

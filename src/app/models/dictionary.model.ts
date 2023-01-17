@@ -1,8 +1,4 @@
 export interface JishoDictionaryEntry {
-  data: JishoDataEntry[];
-}
-
-interface JishoDataEntry {
   slug: string;
   is_common: boolean;
   jlpt: string[];
@@ -17,6 +13,6 @@ interface JishoJapaneseEntry {
 }
 
 interface JishoSensesEntry {
-  english_definitions: string[]; 
+  english_definitions: string[];
   parts_of_speech: string[];
 }

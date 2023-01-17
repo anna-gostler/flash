@@ -1,13 +1,16 @@
-webcam {
-  height: 400px;
-  width: 100%;
-}
-
 .capture-image {
   width: 100%;
   text-align: center;
+  position: relative;
 }
 
 .captured-image-not-present {
   display: none !important;
+}
+
+.action-button {
+  position: absolute;
+  bottom: 1em;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }

@@ -8,13 +8,14 @@ import { VocabEntry } from 'src/app/models/vocab.model';
 export class VocabService {
   constructor() {}
 
-  toVocabEntry(dictionaryEntry: JishoDictionaryEntry): VocabEntry {
-    if (!dictionaryEntry || !dictionaryEntry.data[0]) {
+  toVocabEntry(dictionaryEntries: JishoDictionaryEntry[]): VocabEntry {
+    console.log('toVocabEntry. dictionaryEntries', dictionaryEntries);
+
+    if (!dictionaryEntries) {
       return {};
     } else {
-      console.log(dictionaryEntry);
       let level = '';
-      const firstDataItem = dictionaryEntry.data[0];
+      const firstDataItem = dictionaryEntries[0];
 
       if (firstDataItem.jlpt.length > 0) {
         level = firstDataItem.jlpt.sort().reverse()[0];

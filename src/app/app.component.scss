@@ -6,6 +6,12 @@
   background-color: #c2ced1;
 }
 
+@media screen and (orientation: landscape) {
+  #app-container-item-bottom {
+    display: none !important;
+  }
+}
+
 #app-container-item-top {
   flex-grow: 1;
 }

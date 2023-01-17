@@ -1,6 +1,14 @@
+<!--wxh{{ getCameraWidth() }} {{ getCameraHeight() }} wxh: {{ screenWidth }}
+{{ screenHeight }} isPortrait:
+{{ isPortrait }}
+-->
+
 <div class="capture-image">
   <webcam
-    [width]="getScreenWidth()"
+    id="camera"
+    #camera
+    [width]="cameraWidth"
+    [height]="cameraHeight"
     *ngIf="!image"
     [trigger]="triggerObservable"
     (imageCapture)="handleImage($event)"
@@ -8,7 +16,13 @@
   </webcam>
 
   <div class="captured-image" [class.captured-image-not-present]="!image">
-    <img id="captured-image" [src]="image?.imageAsDataUrl" />
+    <img
+      id="captured-image"
+      [width]="cameraWidth"
+      [height]="cameraHeight"
+      #capturedImage
+      [src]="image?.imageAsDataUrl"
+    />
   </div>
 
   <div>

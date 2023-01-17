@@ -1,3 +1,5 @@
 # FlashApp
 
-Take pictures of Japanese text and create flash cards from it.
+Translation app for real-world Japanese text
+Extracts text from image with Tesseract
+Looks up translation using Jisho API

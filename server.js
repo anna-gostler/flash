@@ -7,14 +7,16 @@ const PORT = 8080;
 
 app.use(cors());
 app.use(express.static(__dirname + "/dist/flash-app"));
-app.get("/*", function (req, res) {
+
+app.get("/", function (req, res) {
+  console.log("Received request for index.html");
   res.sendFile(path.join(__dirname + "/dist/flash-app/index.html"));
 });
 
 app.get("/dict", async (req, res) => {
-  res.set("Access-Control-Allow-Origin", "http://localhost:4200");
+  console.log("Received request to connect to Jisho API. query:", req.query);
 
-  console.log("Connect to Jisho API. query:", req.query);
+  res.set("Access-Control-Allow-Origin", "http://localhost:4200");
 
   const { data } = await got
     .get(`https://jisho.org/api/v1/search/words?keyword=${req.query.keyword}`)
@@ -22,6 +24,12 @@ app.get("/dict", async (req, res) => {
   res.json(data);
 });
 
+app.get("/test", (req, res) => {
+  console.log("Received test request");
 
-app.listen(process.env.PORT || PORT, () => console.log(`server running on port ${PORT}`));
+  res.json({ candy: "bubble-gum" });
+});
 
+app.listen(process.env.PORT || PORT, () =>
+  console.log(`server running on port ${PORT}`)
+);

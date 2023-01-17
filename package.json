@@ -79,7 +79,7 @@
     "child_process": false
   },
   "description": "Take pictures of Japanese text and create flash cards from it.",
-  "main": "index.js",
+  "main": "server.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/anna-gostler/flash.git"

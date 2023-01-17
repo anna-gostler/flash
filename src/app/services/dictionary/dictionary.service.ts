@@ -9,8 +9,12 @@ export class DictionaryService {
   constructor(private http: HttpClient) {}
 
   public getEntry(keyword: string) {
+    // TODO choose url based on environment   
     return this.http.get<JishoDictionaryEntry[]>(
-      `http://localhost:8080/dict?keyword=${keyword}`
+      `https://flash-app.herokuapp.com/dict?keyword=${keyword}`
     );
+    //return this.http.get<JishoDictionaryEntry[]>(
+    //  `http://localhost:8080/dict?keyword=${keyword}`
+    //);
   }
 }

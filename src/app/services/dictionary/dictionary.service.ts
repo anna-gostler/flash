@@ -10,12 +10,12 @@ export class DictionaryService {
 
   public getEntry(keyword: string) {
     console.log(
-      'Get dictionary entry. keyword: ',
+      'Get dictionary entry. keyword:',
       keyword,
-      'isDevMode(): ',
+      'isDevMode:',
       isDevMode()
     );
-    
+
     if (isDevMode()) {
       return this.http.get<JishoDictionaryEntry[]>(
         `http://localhost:8080/dict?keyword=${keyword}`

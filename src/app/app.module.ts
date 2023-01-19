@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import {SplitterModule} from 'primeng/splitter';
+
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -52,6 +54,7 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule,
+    SplitterModule
   ],
   providers: [],
   bootstrap: [AppComponent],

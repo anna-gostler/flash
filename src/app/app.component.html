@@ -1,5 +1,24 @@
 <div id="app-container">
-<app-capture-image id="app-container-item-top"></app-capture-image>
-<app-vocab-card id="app-container-item-bottom"></app-vocab-card>
+  <p-splitter
+    [style]="{ height: screenHeight + 'px' }"
+    [panelSizes]="[50, 50]"
+    layout="vertical"
+    (onResizeEnd)="handleResizeEnd($event)"
+  >
+    <ng-template pTemplate>
+      <app-capture-image
+        id="app-container-item-top"
+        [cameraHeight]="contentTopHeight"
+        [cameraWidth]="contentTopWidth"
+        #contentTop
+      ></app-capture-image>
+    </ng-template>
+    <ng-template pTemplate>
+      <app-vocab-card
+        id="app-container-item-bottom"
+        #contentBottom
+      ></app-vocab-card>
+    </ng-template>
+  </p-splitter>
 </div>
 <router-outlet></router-outlet>

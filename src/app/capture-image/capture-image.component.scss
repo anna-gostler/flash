@@ -1,7 +1,13 @@
+:host {
+  overflow: hidden;
+  background: black;
+}
+
 .capture-image {
   width: 100%;
   text-align: center;
   position: relative;
+  overflow: hidden;
 }
 
 .captured-image-not-present {

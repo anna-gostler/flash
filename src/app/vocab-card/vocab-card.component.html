@@ -1,26 +1,29 @@
-<mat-card class="vocab-card-container">
+<mat-card class="vocab-card-container slider-item">
   <mat-spinner *ngIf="loading" class="progress-spinner"></mat-spinner>
-  <mat-form-field>
-    <mat-label>Japanese</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="vocabEntry.expression"
-      [disabled]="loading"
-    />
-  </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Reading</mat-label>
-    <input
-      matInput
-      type="text"
-      [(ngModel)]="vocabEntry.reading"
-      [disabled]="loading"
-    />
-  </mat-form-field>
+  <div class="form-row-container slider-item">
+    <mat-form-field class="slider-item">
+      <mat-label>Japanese</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="vocabEntry.expression"
+        [disabled]="loading"
+      />
+    </mat-form-field>
 
-  <mat-form-field>
+    <mat-form-field class="slider-item">
+      <mat-label>Reading</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="vocabEntry.reading"
+        [disabled]="loading"
+      />
+    </mat-form-field>
+  </div>
+
+  <mat-form-field class="slider-item">
     <mat-label>Meanings</mat-label>
     <input
       matInput
@@ -30,7 +33,7 @@
     />
   </mat-form-field>
 
-  <mat-form-field>
+  <mat-form-field class="slider-item">
     <mat-label>Example</mat-label>
     <input
       matInput
@@ -59,4 +62,3 @@
     </button>
   </div>
 </mat-card>
-<!--<input type="file" accept="image/*" capture="environment">-->

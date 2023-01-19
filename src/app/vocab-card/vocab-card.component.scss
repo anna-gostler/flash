@@ -2,23 +2,22 @@
   display: flex;
   width: 100%;
   justify-content: center;
+  overflow: auto;
 }
 
 .vocab-card-container {
   width: calc(100% - 2em);
-  margin-bottom: 1em;
+  overflow: auto;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .button-container {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  position: absolute;
   margin-left: auto;
   margin-right: auto;
-  left: 0;
-  right: 0;
-  bottom: 1em;
 
   button {
     margin-left: 1em;
@@ -31,5 +30,18 @@
 
 .progress-spinner {
   position: absolute;
+  margin-left: auto;
+  margin-right: auto;
   z-index: 100;
+}
+
+
+.slider-item {
+    /*
+  min-height: 1em;
+  flex-grow: 1;
+  flex-basis: 0;
+  */
+  /* min-height: 10%; */
+  //overflow: auto;
 }

@@ -36,8 +36,8 @@ export class CaptureImageComponent implements AfterViewInit {
         this.rerender();
       });
     }
-    timer(500).subscribe(() => {
-      console.log('set options');
+    timer(1000).subscribe(() => {
+      console.log('set options - height');
       this.videoOptions = result;
       this.cdr.detectChanges();
     });
@@ -61,8 +61,8 @@ export class CaptureImageComponent implements AfterViewInit {
     this._cameraWidth = val;
 
     const result: MediaTrackConstraints = this.getVideoConstraints();
-    timer(500).subscribe(() => {
-      console.log('set options');
+    timer(1000).subscribe(() => {
+      console.log('set options - width');
       this.videoOptions = result;
       this.cdr.detectChanges();
     });
@@ -126,8 +126,8 @@ export class CaptureImageComponent implements AfterViewInit {
   }
 
   public get videoOptions(): MediaTrackConstraints {
-    console.log('get videoOptions. width', this._videoOptions.width);
-    if (!this._videoOptions.width || !this._videoOptions.height) {
+    console.log('get videoOptions. width', this._videoOptions.width, 'height', this._videoOptions.height);
+    if (!this._videoOptions.width && !this._videoOptions.height) {
       return {};
     }
     return this._videoOptions;

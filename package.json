@@ -37,6 +37,7 @@
     "ng-resize-observer": "^1.0.2",
     "ngn": "^2.0.0-alpha.14",
     "ngx-indexed-db": "^12.0.0",
+    "ngx-rerender": "^1.1.0",
     "ngx-webcam": "^0.4.1",
     "node-pre-gyp": "^0.17.0",
     "primeng": "^15.1.0",

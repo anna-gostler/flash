@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import {SplitterModule} from 'primeng/splitter';
+import { NgxRerenderModule } from 'ngx-rerender';
+
 
 
 const dbConfig: DBConfig = {
@@ -54,7 +56,8 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule,
-    SplitterModule
+    SplitterModule,
+    NgxRerenderModule
   ],
   providers: [],
   bootstrap: [AppComponent],

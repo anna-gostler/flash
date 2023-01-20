@@ -18,11 +18,11 @@ export class AppComponent {
 
   public screenWidth: any;
   public screenHeight: any;
-  public contentTopHeight: number = 100;
-  public contentTopWidth: number = 100;
-  public contentBottomHeight: number = 100;
-  public contentBottomWidth: number = 100;
-  private splitterHeight = 4;
+  public contentTopHeight: number = 0;
+  public contentTopWidth: number = 0;
+  public contentBottomHeight: number = 0;
+  public contentBottomWidth: number = 0;
+  private splitterHeight = 10;
 
   @ViewChild('contentTop', { read: ElementRef }) contentTop!: ElementRef;
   @ViewChild('contentBottom', { read: ElementRef }) contentBottom!: ElementRef;

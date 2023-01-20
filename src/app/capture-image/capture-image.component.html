@@ -1,14 +1,18 @@
 <div class="capture-image" #cameraContainer>
-  <webcam
-    id="camera"
-    [height]="cameraHeight"
-    [width]="cameraWidth"
-    *ngIf="!image"
-    [trigger]="triggerObservable"
-    (imageCapture)="handleImage($event)"
-    #camera
-  >
-  </webcam>
+  <div *mcRerender="triggerRerender">
+    <webcam
+      id="camera"
+      [height]="cameraHeight"
+      [width]="cameraWidth"
+      *ngIf="!image"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      [videoOptions]="videoOptions"
+      [imageQuality]="1"
+      #camera
+    >
+    </webcam>
+  </div>
 
   <div class="captured-image" [class.captured-image-not-present]="!image">
     <img

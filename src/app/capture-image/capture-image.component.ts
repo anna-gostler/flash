@@ -4,14 +4,27 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  NgZone,
   Output,
   ViewChild,
 } from '@angular/core';
 import { WebcamComponent, WebcamImage } from 'ngx-webcam';
-import { Subject, Observable, timer } from 'rxjs';
+import {
+  Subject,
+  Observable,
+  timer,
+  BehaviorSubject,
+  debounceTime,
+} from 'rxjs';
+import { distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 import { AnnotationService } from '../services/annotation/annotation.service';
 import { AfterViewInit, ChangeDetectorRef } from '@angular/core';
+
+interface Size {
+  width: number;
+  height: number;
+}
 
 @Component({
   selector: 'app-capture-image',
@@ -20,57 +33,14 @@ import { AfterViewInit, ChangeDetectorRef } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptureImageComponent implements AfterViewInit {
+  observer!: ResizeObserver;
+  cameraSize$ = new BehaviorSubject<Size>({ width: 0, height: 0 });
+  cameraValid = false;
+
   @Input() image?: WebcamImage;
-  @Input()
-  public set cameraHeight(val: number) {
-    if (val === 0) {
-      return;
-    }
-    this._cameraHeight = val;
-    const result: MediaTrackConstraints = this.getVideoConstraints();
+  @Input() cameraWidth = 0;
+  @Input() cameraHeight = 0;
 
-    let change = this.videoConstraintsChanged(result);
-
-    if (change) {
-      timer(100).subscribe(() => {
-        this.rerender();
-      });
-    }
-    timer(1000).subscribe(() => {
-      console.log('set options - height');
-      this.videoOptions = result;
-      this.cdr.detectChanges();
-    });
-  }
-  private videoConstraintsChanged(result: MediaTrackConstraints) {
-    let change = false;
-    if (this._videoOptions && this._videoOptions !== result) {
-      change = true;
-    }
-    return change;
-  }
-
-  public get cameraHeight(): number {
-    return this._cameraHeight;
-  }
-  @Input()
-  public set cameraWidth(val: number) {
-    if (val === 0) {
-      return;
-    }
-    this._cameraWidth = val;
-
-    const result: MediaTrackConstraints = this.getVideoConstraints();
-    timer(1000).subscribe(() => {
-      console.log('set options - width');
-      this.videoOptions = result;
-      this.cdr.detectChanges();
-    });
-  }
-
-  public get cameraWidth(): number {
-    return this._cameraWidth;
-  }
   @Output() imageChange = new EventEmitter<WebcamImage>();
   @ViewChild('camera') camera?: WebcamComponent;
   @ViewChild('capturedImage') capturedImage?: ElementRef;
@@ -84,14 +54,49 @@ export class CaptureImageComponent implements AfterViewInit {
   public triggerRerender: number = 0;
 
   private _videoOptions: MediaTrackConstraints = {};
-  private _cameraWidth: number = 0;
-  private _cameraHeight: number = 0;
   private trigger: Subject<void> = new Subject<void>();
 
   constructor(
     private annotationService: AnnotationService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private host: ElementRef,
+    private zone: NgZone
   ) {}
+
+  ngOnInit() {
+    this.observer = new ResizeObserver((entries) => {
+      this.zone.run(() => {
+        this.cameraValid = false;
+        this.cameraWidth = entries[0].contentRect.width;
+        (this.cameraHeight = entries[0].contentRect.height),
+          this.cameraSize$.next({
+            width: this.cameraWidth,
+            height: this.cameraHeight,
+          });
+      });
+    });
+
+    this.observer.observe(this.host.nativeElement);
+    this.cameraSize$
+      .pipe(debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => {
+        console.log('cameraSize received', value.width, value.height);
+
+        if (this.camera?.videoInitialized) {
+          console.log('rerender camera');
+          this.rerender();
+        } else {
+          console.log('did not rerender camera');
+        }
+
+        this.cameraValid = true;
+
+        timer(1000).subscribe(() => {
+          this.videoOptions = this.generateVideoConstraints();
+          this.cdr.detectChanges();
+        });
+      });
+  }
 
   ngAfterViewInit(): void {
     this.annotationService.setUp('captured-image');
@@ -126,22 +131,29 @@ export class CaptureImageComponent implements AfterViewInit {
   }
 
   public get videoOptions(): MediaTrackConstraints {
-    console.log('get videoOptions. width', this._videoOptions.width, 'height', this._videoOptions.height);
-    if (!this._videoOptions.width && !this._videoOptions.height) {
-      return {};
-    }
+    console.log(
+      'get videoOptions. width',
+      this._videoOptions.width,
+      'height',
+      this._videoOptions.height
+    );
+
     return this._videoOptions;
   }
 
-  private getVideoConstraints() {
+  private generateVideoConstraints() {
     const result: MediaTrackConstraints = {
-      width: { min: this._cameraWidth, ideal: this._cameraWidth },
-      height: { min: this._cameraHeight, ideal: this._cameraHeight },
+      width: { min: this.cameraWidth, ideal: this.cameraWidth },
+      height: { min: this.cameraHeight, ideal: this.cameraHeight },
     };
 
     if (this.facingMode && this.facingMode !== '') {
       result.facingMode = { ideal: this.facingMode };
     }
     return result;
+  }
+
+  ngOnDestroy() {
+    this.observer.unobserve(this.host.nativeElement);
   }
 }

@@ -4,7 +4,7 @@
       id="camera"
       [height]="cameraHeight"
       [width]="cameraWidth"
-      *ngIf="!image"
+      *ngIf="!image && !!cameraValid"
       [trigger]="triggerObservable"
       (imageCapture)="handleImage($event)"
       [videoOptions]="videoOptions"

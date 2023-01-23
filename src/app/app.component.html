@@ -1,24 +1,15 @@
 <div id="app-container">
-  <p-splitter
-    [style]="{ height: screenHeight + 'px' }"
-    [panelSizes]="[50, 50]"
-    layout="vertical"
-    (onResizeEnd)="handleResizeEnd($event)"
-  >
-    <ng-template pTemplate>
-      <app-capture-image
-        id="app-container-item-top"
-        [cameraHeight]="contentTopHeight"
-        [cameraWidth]="contentTopWidth"
-        #contentTop
-      ></app-capture-image>
-    </ng-template>
-    <ng-template pTemplate>
-      <app-vocab-card
-        id="app-container-item-bottom"
-        #contentBottom
-      ></app-vocab-card>
-    </ng-template>
-  </p-splitter>
+  <app-capture-image
+    id="app-container-item-top"
+    (imageChange)="onImageChange($event)"
+    #contentTop
+  ></app-capture-image>
+
+  <app-overlay-container *ngIf="hasImage">
+    <app-vocab-card
+      id="app-container-item-bottom"
+      #contentBottom
+    ></app-vocab-card>
+  </app-overlay-container>
 </div>
 <router-outlet></router-outlet>

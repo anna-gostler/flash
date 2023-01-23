@@ -41,6 +41,8 @@ export class AnnotationService {
 
     // TODO execute also on selection changed
     this.anno.on('createSelection', (selection: any) => {
+      console.log('createSelection', selection);
+
       this.vocabEntryLoadingSubject.next(true);
 
       const { snippet } = this.anno.getImageSnippetById(selection.id);
@@ -57,6 +59,10 @@ export class AnnotationService {
           },
         });
       });
+    });
+
+    this.anno.on('updateAnnotation', function (annotation: any, previous: any) {
+      console.log('update annotation', annotation);
     });
   }
 

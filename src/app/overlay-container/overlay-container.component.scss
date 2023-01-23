@@ -1,0 +1,17 @@
+:host {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.drag-handle {
+  width: 10em;
+  height: 0.5em;
+  background: lightgrey;
+  margin: auto;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 1em;
+}

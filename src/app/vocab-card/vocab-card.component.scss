@@ -1,12 +1,13 @@
 :host {
   display: flex;
   width: 100%;
+  height: 100%;
   justify-content: center;
   overflow: auto;
 }
 
 .vocab-card-container {
-  width: calc(100% - 2em);
+  width: 100%;
   overflow: auto;
   padding: 0.5em;
   margin-bottom: 0.5em;
@@ -33,15 +34,4 @@
   margin-left: auto;
   margin-right: auto;
   z-index: 100;
-}
-
-
-.slider-item {
-    /*
-  min-height: 1em;
-  flex-grow: 1;
-  flex-basis: 0;
-  */
-  /* min-height: 10%; */
-  //overflow: auto;
 }

@@ -1,9 +1,9 @@
 <div class="capture-image" #cameraContainer>
-  <div *mcRerender="triggerRerender">
+  <div>
     <webcam
       id="camera"
-      [height]="cameraHeight"
-      [width]="cameraWidth"
+      [height]="(cameraSize$ | async)?.height || 0"
+      [width]="(cameraSize$ | async)?.width || 0"
       *ngIf="!image && !!cameraValid"
       [trigger]="triggerObservable"
       (imageCapture)="handleImage($event)"
@@ -16,8 +16,7 @@
 
   <div class="captured-image" [class.captured-image-not-present]="!image">
     <img
-      [height]="cameraHeight"
-      [width]="cameraWidth"
+      [height]="(cameraSize$ | async)?.height || 0"
       [src]="image?.imageAsDataUrl"
       #capturedImage
       id="captured-image"

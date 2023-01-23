@@ -15,10 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
-import {SplitterModule} from 'primeng/splitter';
-import { NgxRerenderModule } from 'ngx-rerender';
-
-
+import { OverlayContainerComponent } from './overlay-container/overlay-container.component';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -29,7 +26,11 @@ const dbConfig: DBConfig = {
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
         /*TODO create based on vocab model */
-        { name: 'expression', keypath: 'expression', options: { unique: false } },
+        {
+          name: 'expression',
+          keypath: 'expression',
+          options: { unique: false },
+        },
         { name: 'meanings', keypath: 'meanings', options: { unique: false } },
         { name: 'reading', keypath: 'reading', options: { unique: false } },
         { name: 'example', keypath: 'example', options: { unique: false } },
@@ -41,7 +42,12 @@ const dbConfig: DBConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent, VocabCardComponent, CaptureImageComponent],
+  declarations: [
+    AppComponent,
+    VocabCardComponent,
+    CaptureImageComponent,
+    OverlayContainerComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -56,8 +62,6 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule,
-    SplitterModule,
-    NgxRerenderModule
   ],
   providers: [],
   bootstrap: [AppComponent],

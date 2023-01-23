@@ -9,7 +9,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { WebcamComponent, WebcamImage } from 'ngx-webcam';
-import { Subject, Observable, BehaviorSubject, debounceTime } from 'rxjs';
+import {
+  Subject,
+  Observable,
+  BehaviorSubject,
+  debounceTime,
+  timer,
+} from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 import { AnnotationService } from '../services/annotation/annotation.service';
@@ -74,16 +80,18 @@ export class CaptureImageComponent implements AfterViewInit {
     this.observer.observe(document.body);
 
     this.cameraSize$
-      .pipe(debounceTime(2000), distinctUntilChanged())
+      .pipe(debounceTime(1000), distinctUntilChanged())
       .subscribe((value) => {
         console.log('cameraSize received', value.width, value.height);
-
         this.videoOptions = this.generateVideoConstraints(
           value.width,
           value.height
         );
         this.cameraValid = true;
-        this.cdr.detectChanges();
+
+        setTimeout(() => {
+          this.cdr.detectChanges();
+        }, 0);
       });
   }
 

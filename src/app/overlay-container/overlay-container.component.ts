@@ -19,10 +19,9 @@ export class OverlayContainerComponent {
   mouseMoveHandler: (() => void) | undefined;
   touchMoveHandler: (() => void) | undefined;
   private minTop: number = 20;
-  private defaultTop: number = 450;
 
   constructor(private renderer: Renderer2) {
-    this.topPosition = window.innerHeight - this.defaultTop + 'px';
+    this.topPosition = window.innerHeight / 2 + 'px';
   }
 
   activateResize() {

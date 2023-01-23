@@ -20,7 +20,7 @@ export class VocabCardComponent {
       this.vocabEntry = entry;
     });
 
-    this.annotationService.vocabEntryLoadingSubject.subscribe((loading) => {
+    this.annotationService.vocabEntryInProgressSubject.subscribe((loading) => {
       this.loading = loading;
     });
   }

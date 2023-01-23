@@ -14,7 +14,7 @@ export class AnnotationService {
   anno: Annotorious;
   languageCode = 'jpn';
   vocabEntrySubject = new Subject<VocabEntry>();
-  vocabEntryLoadingSubject = new Subject<boolean>();
+  vocabEntryInProgressSubject = new Subject<boolean>();
 
   constructor(
     private ocrService: OcrService,
@@ -43,7 +43,7 @@ export class AnnotationService {
     this.anno.on('createSelection', (selection: any) => {
       console.log('createSelection', selection);
 
-      this.vocabEntryLoadingSubject.next(true);
+      this.vocabEntryInProgressSubject.next(true);
 
       const { snippet } = this.anno.getImageSnippetById(selection.id);
       this.ocrService.ocr(snippet, this.languageCode).then((extractedText) => {
@@ -55,7 +55,7 @@ export class AnnotationService {
           },
           error: (e) => console.error(e),
           complete: () => {
-            this.vocabEntryLoadingSubject.next(false);
+            this.vocabEntryInProgressSubject.next(false);
           },
         });
       });

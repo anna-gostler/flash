@@ -74,7 +74,7 @@ export class CaptureImageComponent implements AfterViewInit {
     this.observer.observe(document.body);
 
     this.cameraSize$
-      .pipe(debounceTime(1000), distinctUntilChanged())
+      .pipe(debounceTime(2000), distinctUntilChanged())
       .subscribe((value) => {
         console.log('cameraSize received', value.width, value.height);
 

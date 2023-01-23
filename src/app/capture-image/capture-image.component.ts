@@ -89,9 +89,9 @@ export class CaptureImageComponent implements AfterViewInit {
         );
         this.cameraValid = true;
 
-        setTimeout(() => {
+        timer(1000).subscribe(() => {
           this.cdr.detectChanges();
-        }, 0);
+        });
       });
   }
 

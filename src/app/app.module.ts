@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { OverlayContainerComponent } from './overlay-container/overlay-container.component';
 import { NgxRerenderModule } from 'ngx-rerender';
+import { ContainerItemComponent } from './container-item/container-item.component';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -48,6 +49,7 @@ const dbConfig: DBConfig = {
     VocabCardComponent,
     CaptureImageComponent,
     OverlayContainerComponent,
+    ContainerItemComponent,
   ],
   imports: [
     BrowserModule,

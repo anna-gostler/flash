@@ -9,14 +9,17 @@ import { AnnotationService } from './services/annotation/annotation.service';
 export class AppComponent {
   title = 'flash-app';
 
-  hasAnnotation = false;
+  showContainer = false;
 
   constructor(private annotationService: AnnotationService) {
     this.annotationService.annotationCreated.subscribe((hasAnnotation) => {
-      this.hasAnnotation = hasAnnotation;
+      this.showContainer = hasAnnotation;
     });
   }
 
   ngOnInit() {}
 
+  onCancel() {
+    this.showContainer = false;
+  }
 }

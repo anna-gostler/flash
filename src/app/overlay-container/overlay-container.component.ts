@@ -1,10 +1,16 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  ContentChildren,
+  EventEmitter,
   HostBinding,
   HostListener,
+  Output,
+  QueryList,
   Renderer2,
 } from '@angular/core';
+import { ContainerItemComponent } from '../container-item/container-item.component';
+import { VocabCardComponent } from '../vocab-card/vocab-card.component';
 
 @Component({
   selector: 'app-overlay-container',
@@ -14,6 +20,16 @@ import {
 })
 export class OverlayContainerComponent {
   @HostBinding('style.top') public topPosition: string;
+  // TODO: enable this for any child component that supports container item functionality
+  @ContentChildren(VocabCardComponent)
+  templates!: QueryList<ContainerItemComponent>;
+  @Output() cancel = new EventEmitter<boolean>();
+
+  ngAfterContentInit() {
+    this.templates.forEach((template) => {
+      template.cancel.subscribe(() => this.onCancel());
+    });
+  }
 
   resizingActive: boolean = false;
   mouseMoveHandler: (() => void) | undefined;
@@ -62,6 +78,11 @@ export class OverlayContainerComponent {
         this.topPosition = this.calcTopPosition(touchObj.clientY);
       }
     }
+  }
+
+  onCancel() {
+    console.log('onCancel');
+    this.cancel.emit(true);
   }
 
   private calcTopPosition(clientY: number): string {

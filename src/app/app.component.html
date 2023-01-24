@@ -4,7 +4,7 @@
     #contentTop
   ></app-capture-image>
 
-  <app-overlay-container *ngIf="hasAnnotation">
+  <app-overlay-container (cancel)="onCancel()" *ngIf="showContainer">
     <app-vocab-card
       id="app-container-item-bottom"
       #contentBottom

@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ContainerItemComponent } from '../container-item/container-item.component';
 import { VocabEntry } from '../models/vocab.model';
 import { AnnotationService } from '../services/annotation/annotation.service';
 import { DatabaseService } from '../services/database/database.service';
@@ -8,7 +9,7 @@ import { DatabaseService } from '../services/database/database.service';
   templateUrl: './vocab-card.component.html',
   styleUrls: ['./vocab-card.component.scss'],
 })
-export class VocabCardComponent {
+export class VocabCardComponent extends ContainerItemComponent {
   @Input() vocabEntry: VocabEntry = {};
   @Input() loading: boolean = false;
 
@@ -16,6 +17,7 @@ export class VocabCardComponent {
     private annotationService: AnnotationService,
     private databaseService: DatabaseService
   ) {
+    super();
     this.annotationService.vocabEntrySubject.subscribe((entry) => {
       this.vocabEntry = entry;
     });
@@ -29,7 +31,8 @@ export class VocabCardComponent {
     this.databaseService.add(this.vocabEntry);
   }
 
-  onCancel() {
-    this.vocabEntry = {}
+  onCancelClick() {
+    this.vocabEntry = {};
+    this.onCancel();
   }
 }

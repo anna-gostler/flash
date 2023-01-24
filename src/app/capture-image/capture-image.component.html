@@ -1,5 +1,20 @@
 <div class="capture-image">
-  <div #cameraContainer></div>
+  <ng-template #cameraTemplate>
+    <webcam
+      id="camera"
+      *ngIf="!image"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      [videoOptions]="videoOptions"
+      [imageQuality]="1"
+      [height]="cameraHeight"
+      [width]="cameraWidth"
+      #camera
+    >
+    </webcam>
+  </ng-template>
+
+  <ng-container id="cameraContainer" #cameraContainer></ng-container>
 
   <div class="captured-image" [class.captured-image-not-present]="!image">
     <img

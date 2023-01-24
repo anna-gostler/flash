@@ -5,6 +5,7 @@ import {
   HostListener,
   Input,
   Output,
+  TemplateRef,
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
@@ -21,18 +22,19 @@ import { AfterViewInit, ChangeDetectorRef } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptureImageComponent implements AfterViewInit {
-
   @Input() image?: WebcamImage;
 
   @Output() imageChange = new EventEmitter<boolean>();
   @ViewChild('cameraContainer', { read: ViewContainerRef })
   cameraContainer?: ViewContainerRef;
+  @ViewChild('cameraTemplate', { read: TemplateRef })
+  cameraTemplate!: TemplateRef<any>;
 
   cameraWidth: number = 0;
   cameraHeight: number = 0;
   cameraIcon = fontawesome.faCamera;
   deleteIcon = fontawesome.faRedo;
-  
+
   private _facingMode: string = 'environment';
   private _videoOptions: MediaTrackConstraints = {};
   private _trigger: Subject<void> = new Subject<void>();
@@ -43,22 +45,22 @@ export class CaptureImageComponent implements AfterViewInit {
   ) {}
 
   ngOnInit() {}
+
   createCameraComponent() {
+    this.cameraWidth = window.innerWidth;
+    this.cameraHeight = window.innerHeight;
+
     if (this.cameraContainer) {
       console.log('create CameraComponent');
-      this.cameraWidth = window.innerWidth;
-      this.cameraHeight = window.innerHeight;
-      console.log(this.cameraWidth, this.cameraHeight);
 
+      console.log(this.cameraWidth, this.cameraHeight);
       this._videoOptions = this.generateVideoConstraints(
         this.cameraWidth,
         this.cameraHeight
       );
-      const camera =
-        this.cameraContainer.createComponent<WebcamComponent>(WebcamComponent);
-      camera.instance.width = this.cameraWidth;
-      camera.instance.height = this.cameraHeight;
-      camera.instance.videoOptions = this._videoOptions;
+
+     this.cameraContainer.createEmbeddedView<WebcamComponent>(this.cameraTemplate);
+
     } else {
       console.log('Could not create camera - cameraContainer not found');
     }
@@ -67,7 +69,7 @@ export class CaptureImageComponent implements AfterViewInit {
   removeCameraComponent() {
     if (this.cameraContainer) {
       console.log('remove CameraComponent');
-      this.cameraContainer.remove(0);
+      this.cameraContainer.clear();
     }
   }
 

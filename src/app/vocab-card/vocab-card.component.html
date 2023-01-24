@@ -51,11 +51,11 @@
   </mat-chip-listbox>
 
   <div class="button-container">
-    <button mat-stroked-button [disabled]="loading">Cancel</button
+    <button mat-stroked-button [disabled]="loading" (click)="onCancel()">Cancel</button
     ><button
       mat-stroked-button
       color="primary"
-      (click)="save()"
+      (click)="onSave()"
       [disabled]="loading"
     >
       Save

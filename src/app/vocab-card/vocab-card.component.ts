@@ -25,7 +25,11 @@ export class VocabCardComponent {
     });
   }
 
-  save() {
+  onSave() {
     this.databaseService.add(this.vocabEntry);
+  }
+
+  onCancel() {
+    this.vocabEntry = {}
   }
 }

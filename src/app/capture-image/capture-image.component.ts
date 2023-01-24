@@ -56,7 +56,7 @@ export class CaptureImageComponent implements AfterViewInit {
 
       console.log(this.cameraWidth, this.cameraHeight);
 
-      if (window.matchMedia('(orientation: portrait)').matches) {
+      if (this.isMobile() && window.matchMedia('(orientation: portrait)').matches) {
         this._videoOptions = this.generateVideoConstraints(
           this.cameraHeight,
           this.cameraWidth
@@ -143,5 +143,9 @@ export class CaptureImageComponent implements AfterViewInit {
   onResize(event?: Event) {
     this.removeCameraComponent();
     this.createCameraComponent();
+  }
+
+  private isMobile() {
+    return (/Android|iPhone/i.test(navigator.userAgent));
   }
 }

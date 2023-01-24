@@ -1,4 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { AnnotationService } from './services/annotation/annotation.service';
 
 @Component({
   selector: 'app-root',
@@ -7,11 +8,15 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class AppComponent {
   title = 'flash-app';
-  hasImage: boolean = false;
+
+  hasAnnotation = false;
+
+  constructor(private annotationService: AnnotationService) {
+    this.annotationService.annotationCreated.subscribe((hasAnnotation) => {
+      this.hasAnnotation = hasAnnotation;
+    });
+  }
 
   ngOnInit() {}
 
-  onImageChange($event: boolean) {
-    this.hasImage = $event;
-  }
 }

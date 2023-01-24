@@ -1,11 +1,10 @@
 <div id="app-container">
   <app-capture-image
     id="app-container-item-top"
-    (imageChange)="onImageChange($event)"
     #contentTop
   ></app-capture-image>
 
-  <app-overlay-container *ngIf="hasImage">
+  <app-overlay-container *ngIf="hasAnnotation">
     <app-vocab-card
       id="app-container-item-bottom"
       #contentBottom

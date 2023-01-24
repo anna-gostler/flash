@@ -15,6 +15,8 @@ export class AnnotationService {
   languageCode = 'jpn';
   vocabEntrySubject = new Subject<VocabEntry>();
   vocabEntryInProgressSubject = new Subject<boolean>();
+  annotationCreated = new Subject<boolean>();
+
 
   constructor(
     private ocrService: OcrService,
@@ -42,8 +44,10 @@ export class AnnotationService {
     // TODO execute also on selection changed
     this.anno.on('createSelection', (selection: any) => {
       console.log('createSelection', selection);
-
       this.vocabEntryInProgressSubject.next(true);
+      this.annotationCreated.next(true);
+      this.vocabEntrySubject.next({});
+
 
       const { snippet } = this.anno.getImageSnippetById(selection.id);
       this.ocrService.ocr(snippet, this.languageCode).then((extractedText) => {
@@ -61,12 +65,17 @@ export class AnnotationService {
       });
     });
 
-    this.anno.on('updateAnnotation', function (annotation: any, previous: any) {
-      console.log('update annotation', annotation);
+    this.anno.on('changeSelectionTarget', function (selection: any) {
+      console.log('update selection');
     });
   }
 
   clearAnnotations(): void {
     this.anno.clearAnnotations();
+    this.annotationCreated.next(false);
+  }
+
+  hasAnnotation(): boolean {
+    return this.anno && this.anno.getAnnotations().length > 0;
   }
 }

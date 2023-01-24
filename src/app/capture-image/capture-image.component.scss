@@ -4,10 +4,16 @@
 }
 
 .capture-image {
-  width: 100%;
+  width: 100% !important;
+  height: 100% !important;
   text-align: center;
-  position: relative;
   overflow: hidden;
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .captured-image-not-present {
@@ -18,10 +24,4 @@
   position: absolute;
   bottom: 1em;
   transform: translate(-50%, -50%);
-}
-
-webcam-container .webcam-wrapper,
-.webcam-wrapper video {
-  width: 100% !important;
-  height: 100% !important;
 }

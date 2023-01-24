@@ -1,30 +1,18 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
+  HostListener,
   Input,
-  NgZone,
   Output,
   ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { WebcamComponent, WebcamImage } from 'ngx-webcam';
-import {
-  Subject,
-  Observable,
-  BehaviorSubject,
-  debounceTime,
-  timer,
-} from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 import { AnnotationService } from '../services/annotation/annotation.service';
 import { AfterViewInit, ChangeDetectorRef } from '@angular/core';
-
-interface Size {
-  width: number;
-  height: number;
-}
 
 @Component({
   selector: 'app-capture-image',
@@ -33,75 +21,65 @@ interface Size {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CaptureImageComponent implements AfterViewInit {
-  observer!: ResizeObserver;
-  cameraSize$ = new BehaviorSubject<Size>({ width: 0, height: 0 });
-  cameraValid = false;
 
   @Input() image?: WebcamImage;
 
   @Output() imageChange = new EventEmitter<boolean>();
-  @ViewChild('camera') camera?: WebcamComponent;
-  @ViewChild('capturedImage') capturedImage?: ElementRef;
-  @ViewChild('cameraContainer', { read: ElementRef })
-  cameraContainer!: ElementRef;
+  @ViewChild('cameraContainer', { read: ViewContainerRef })
+  cameraContainer?: ViewContainerRef;
 
+  cameraWidth: number = 0;
+  cameraHeight: number = 0;
   cameraIcon = fontawesome.faCamera;
   deleteIcon = fontawesome.faRedo;
-  facingMode: string = 'environment';
-
-  videoOptions: MediaTrackConstraints = {};
-  private trigger: Subject<void> = new Subject<void>();
+  
+  private _facingMode: string = 'environment';
+  private _videoOptions: MediaTrackConstraints = {};
+  private _trigger: Subject<void> = new Subject<void>();
 
   constructor(
     private annotationService: AnnotationService,
-    private cdr: ChangeDetectorRef,
-    private zone: NgZone
+    private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    this.observer = new ResizeObserver((entries) => {
-      this.zone.run(() => {
-        this.cameraValid = false;
+  ngOnInit() {}
+  createCameraComponent() {
+    if (this.cameraContainer) {
+      console.log('create CameraComponent');
+      this.cameraWidth = window.innerWidth;
+      this.cameraHeight = window.innerHeight;
+      console.log(this.cameraWidth, this.cameraHeight);
 
-        const w = entries[0].contentRect.width;
-        const h = entries[0].contentRect.height;
+      this._videoOptions = this.generateVideoConstraints(
+        this.cameraWidth,
+        this.cameraHeight
+      );
+      const camera =
+        this.cameraContainer.createComponent<WebcamComponent>(WebcamComponent);
+      camera.instance.width = this.cameraWidth;
+      camera.instance.height = this.cameraHeight;
+      camera.instance.videoOptions = this._videoOptions;
+    } else {
+      console.log('Could not create camera - cameraContainer not found');
+    }
+  }
 
-        if (w === 0 && h === 0) {
-          return;
-        }
-
-        this.cameraSize$.next({
-          width: w,
-          height: h,
-        });
-      });
-    });
-
-    this.observer.observe(document.body);
-
-    this.cameraSize$
-      .pipe(debounceTime(1000), distinctUntilChanged())
-      .subscribe((value) => {
-        console.log('cameraSize received', value.width, value.height);
-        this.videoOptions = this.generateVideoConstraints(
-          value.width,
-          value.height
-        );
-        this.cameraValid = true;
-
-        timer(1000).subscribe(() => {
-          this.cdr.detectChanges();
-        });
-      });
+  removeCameraComponent() {
+    if (this.cameraContainer) {
+      console.log('remove CameraComponent');
+      this.cameraContainer.remove(0);
+    }
   }
 
   ngAfterViewInit(): void {
     this.annotationService.setUp('captured-image');
+    this.createCameraComponent();
+
     this.cdr.detectChanges();
   }
 
   triggerSnapshot(): void {
-    this.trigger.next();
+    this._trigger.next();
   }
 
   handleImage(webcamImage: WebcamImage): void {
@@ -115,8 +93,16 @@ export class CaptureImageComponent implements AfterViewInit {
     this.annotationService.clearAnnotations();
   }
 
+  public get videoOptions(): MediaTrackConstraints {
+    return this._videoOptions;
+  }
+
+  public set videoOptions(options: MediaTrackConstraints) {
+    this._videoOptions = options;
+  }
+
   public get triggerObservable(): Observable<void> {
-    return this.trigger.asObservable();
+    return this._trigger.asObservable();
   }
 
   private generateVideoConstraints(width: number, height: number) {
@@ -129,15 +115,15 @@ export class CaptureImageComponent implements AfterViewInit {
         min: height,
         ideal: height,
       },
+      facingMode: { ideal: this._facingMode },
     };
 
-    if (this.facingMode && this.facingMode !== '') {
-      result.facingMode = { ideal: this.facingMode };
-    }
     return result;
   }
 
-  ngOnDestroy() {
-    this.observer.unobserve(document.body);
+  @HostListener('window:resize', ['$event'])
+  onResize(event?: Event) {
+    this.removeCameraComponent();
+    this.createCameraComponent();
   }
 }

@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { OverlayContainerComponent } from './overlay-container/overlay-container.component';
+import { NgxRerenderModule } from 'ngx-rerender';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -62,6 +63,7 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     FormsModule,
     MatProgressSpinnerModule,
+    NgxRerenderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

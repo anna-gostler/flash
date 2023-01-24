@@ -29,6 +29,7 @@ export class CaptureImageComponent implements AfterViewInit {
   cameraContainer?: ViewContainerRef;
   @ViewChild('cameraTemplate', { read: TemplateRef })
   cameraTemplate!: TemplateRef<any>;
+  @ViewChild('camera') camera?: WebcamComponent;
 
   cameraWidth: number = 0;
   cameraHeight: number = 0;
@@ -55,12 +56,19 @@ export class CaptureImageComponent implements AfterViewInit {
 
       console.log(this.cameraWidth, this.cameraHeight);
       this._videoOptions = this.generateVideoConstraints(
-        this.cameraWidth,
-        this.cameraHeight
+        this.cameraHeight,
+        this.cameraWidth
       );
 
-     this.cameraContainer.createEmbeddedView<WebcamComponent>(this.cameraTemplate);
+      this.cameraContainer.createEmbeddedView<WebcamComponent>(
+        this.cameraTemplate
+      );
+      if (this.camera) {
+        console.log('set variables directly');
 
+        this.camera.videoOptions = this._videoOptions;
+        this.cdr.detectChanges();
+      }
     } else {
       console.log('Could not create camera - cameraContainer not found');
     }

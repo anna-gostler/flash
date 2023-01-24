@@ -26,5 +26,6 @@ body {
 }
 
 video {
-  //box-shadow:inset 0px 0px 0px 10px #f00;
+  border: 5px solid red;
+  box-shadow: inset 0px 0px 0px 5px black;
 }

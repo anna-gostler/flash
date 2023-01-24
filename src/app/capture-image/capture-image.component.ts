@@ -55,10 +55,18 @@ export class CaptureImageComponent implements AfterViewInit {
       console.log('create CameraComponent');
 
       console.log(this.cameraWidth, this.cameraHeight);
-      this._videoOptions = this.generateVideoConstraints(
-        this.cameraHeight,
-        this.cameraWidth
-      );
+
+      if (window.matchMedia('(orientation: portrait)').matches) {
+        this._videoOptions = this.generateVideoConstraints(
+          this.cameraHeight,
+          this.cameraWidth
+        );
+      } else {
+        this._videoOptions = this.generateVideoConstraints(
+          this.cameraWidth,
+          this.cameraHeight
+        );
+      }
 
       this.cameraContainer.createEmbeddedView<WebcamComponent>(
         this.cameraTemplate

@@ -1,3 +1,5 @@
+<app-button-bar [config]="getPageButtonBarConfig()"></app-button-bar>
+
 <mat-card *ngFor="let vocabEntry of vocabEntries$ | async" class="saved-vocab-item">
   <mat-card-title>{{ vocabEntry.expression }}</mat-card-title>
   <span>{{ vocabEntry.meanings?.join(', ') }}</span>
@@ -7,3 +9,4 @@
   <span *ngIf="vocabEntry.common">common</span>
   <!--<app-button-bar [config]="getButtonBarConfig(vocabEntry)"></app-button-bar>-->
 </mat-card>
+

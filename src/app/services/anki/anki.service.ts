@@ -34,8 +34,14 @@ export class AnkiService {
         data.push({
           front: vocabEntry.expression,
           back: this.clean(vocabEntry.reading)
-            .concat('\n')
-            .concat(this.clean(vocabEntry.meanings?.join(', ')))
+            .concat(' ')
+            .concat(
+              this.clean(vocabEntry.meanings?.join(' '))
+                .concat(' ')
+                .concat(this.clean(vocabEntry.level))
+                .concat(' ')
+                .concat(vocabEntry.common ? 'common' : '')
+            ),
         });
       }
     }

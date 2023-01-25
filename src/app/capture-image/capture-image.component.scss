@@ -20,10 +20,10 @@
   display: none !important;
 }
 
-.action-button {
+app-button-bar {
   position: absolute;
-  bottom: 1em;
-  transform: translate(-50%, -50%);
+  bottom: 6em;
+  left: 0;
+  right: 0;
+  background-color: transparent !important;
 }
-
-

@@ -10,10 +10,11 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { WebcamComponent, WebcamImage } from 'ngx-webcam';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 import { AnnotationService } from '../services/annotation/annotation.service';
 import { AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { ButtonConfig } from '../models/config.model';
 
 @Component({
   selector: 'app-capture-image',
@@ -33,8 +34,6 @@ export class CaptureImageComponent implements AfterViewInit {
 
   cameraWidth: number = 0;
   cameraHeight: number = 0;
-  cameraIcon = fontawesome.faCamera;
-  deleteIcon = fontawesome.faRedo;
 
   private _facingMode: string = 'environment';
   private _videoOptions: MediaTrackConstraints = {};
@@ -45,8 +44,6 @@ export class CaptureImageComponent implements AfterViewInit {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {}
-
   createCameraComponent() {
     this.cameraWidth = window.innerWidth;
     this.cameraHeight = window.innerHeight;
@@ -56,7 +53,10 @@ export class CaptureImageComponent implements AfterViewInit {
 
       console.log(this.cameraWidth, this.cameraHeight);
 
-      if (this.isMobile() && window.matchMedia('(orientation: portrait)').matches) {
+      if (
+        this.isMobile() &&
+        window.matchMedia('(orientation: portrait)').matches
+      ) {
         this._videoOptions = this.generateVideoConstraints(
           this.cameraHeight,
           this.cameraWidth
@@ -72,7 +72,7 @@ export class CaptureImageComponent implements AfterViewInit {
         this.cameraTemplate
       );
       if (this.camera) {
-        console.log('set variables directly');
+        console.log('Set variables directly');
 
         this.camera.videoOptions = this._videoOptions;
         this.cdr.detectChanges();
@@ -92,11 +92,11 @@ export class CaptureImageComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.annotationService.setUp('captured-image');
     this.createCameraComponent();
-
     this.cdr.detectChanges();
   }
 
   triggerSnapshot(): void {
+    console.log('triggerSnapshot');
     this._trigger.next();
   }
 
@@ -106,6 +106,7 @@ export class CaptureImageComponent implements AfterViewInit {
   }
 
   deleteImage(): void {
+    console.log('deleteImage');
     this.image = undefined;
     this.imageChange.emit(false);
     this.annotationService.clearAnnotations();
@@ -146,6 +147,23 @@ export class CaptureImageComponent implements AfterViewInit {
   }
 
   private isMobile() {
-    return (/Android|iPhone/i.test(navigator.userAgent));
+    return /Android|iPhone/i.test(navigator.userAgent);
+  }
+
+  get buttonBarConfig(): ButtonConfig[] {
+    return [
+      {
+        id: 'trigger',
+        icon: fontawesome.faCamera,
+        hide: !!this.image,
+        callback: () => this.triggerSnapshot(),
+      },
+      {
+        id: 'delete',
+        icon: fontawesome.faRedo,
+        hide: !this.image,
+        callback: () => this.deleteImage(),
+      },
+    ];
   }
 }

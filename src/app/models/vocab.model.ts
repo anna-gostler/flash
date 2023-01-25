@@ -1,4 +1,5 @@
 export type VocabEntry = {
+    id?: string;
     expression?: string;
     meanings?: string[];
     reading?: string;

@@ -13,18 +13,6 @@
   margin-bottom: 0.5em;
 }
 
-.button-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
-
-  button {
-    margin-left: 1em;
-  }
-}
-
 .tag-container {
   margin-left: 1em;
 }
@@ -34,4 +22,8 @@
   margin-left: auto;
   margin-right: auto;
   z-index: 100;
+}
+
+app-button-bar {
+  bottom: 4em;
 }

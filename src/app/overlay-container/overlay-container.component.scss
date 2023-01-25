@@ -1,9 +1,10 @@
 :host {
   position: absolute;
-  bottom: 0;
+  bottom: 5em;
   left: 0;
   right: 0;
   top: 0;
+  z-index: 100;
 }
 
 .drag-handle {

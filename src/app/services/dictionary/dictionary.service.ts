@@ -9,6 +9,8 @@ export class DictionaryService {
   constructor(private http: HttpClient) {}
 
   public getEntry(keyword: string) {
+    keyword = this.cleanString(keyword);
+
     console.log(
       'Get dictionary entry. keyword:',
       keyword,
@@ -25,5 +27,9 @@ export class DictionaryService {
         `https://flash-app.herokuapp.com/dict?keyword=${keyword}`
       );
     }
+  }
+
+  cleanString(str: string) {
+    return str.replace(/\s/g, "");
   }
 }

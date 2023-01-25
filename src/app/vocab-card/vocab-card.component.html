@@ -50,15 +50,7 @@
     <mat-chip-option *ngIf="vocabEntry?.common">Common</mat-chip-option>
   </mat-chip-listbox>
 
-  <div class="button-container">
-    <button mat-stroked-button [disabled]="loading" (click)="onCancelClick()">Cancel</button
-    ><button
-      mat-stroked-button
-      color="primary"
-      (click)="onSave()"
-      [disabled]="loading"
-    >
-      Save
-    </button>
-  </div>
+  <app-button-bar [config]="buttonBarConfig"></app-button-bar>
+
+
 </mat-card>

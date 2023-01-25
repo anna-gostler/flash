@@ -1,0 +1,14 @@
+<div class="button-container">
+  <ng-container *ngFor="let buttonConfig of config">
+    <button class="button-container-button"
+      *ngIf="!buttonConfig.hide"
+      mat-stroked-button
+      (click)="buttonConfig.callback()"
+      [disabled]="buttonConfig.disabled"
+      [class.button-main]="buttonConfig.main"
+    >
+      <fa-icon *ngIf="buttonConfig.icon" [icon]="buttonConfig.icon"></fa-icon
+      >{{ buttonConfig.label }}
+    </button>
+  </ng-container>
+</div>

@@ -25,22 +25,5 @@
     />
   </div>
 
-  <div>
-    <button
-      *ngIf="!image"
-      mat-stroked-button
-      class="action-button"
-      (click)="triggerSnapshot()"
-    >
-      <fa-icon [icon]="cameraIcon"></fa-icon>
-    </button>
-    <button
-      *ngIf="image"
-      mat-stroked-button
-      class="action-button"
-      (click)="deleteImage()"
-    >
-      <fa-icon [icon]="deleteIcon"></fa-icon>
-    </button>
-  </div>
+  <app-button-bar [config]="buttonBarConfig"></app-button-bar>
 </div>

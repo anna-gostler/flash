@@ -34,7 +34,11 @@ export class OverlayContainerComponent {
   resizingActive: boolean = false;
   mouseMoveHandler: (() => void) | undefined;
   touchMoveHandler: (() => void) | undefined;
-  private minTop: number = 20;
+  mouseUpHandler: (() => void) | undefined;
+  touchUpHandler: (() => void) | undefined;
+
+  private minDistTop: number = 20;
+  private minDistBottom: number = 100;
 
   constructor(private renderer: Renderer2) {
     this.topPosition = window.innerHeight / 2 + 'px';
@@ -43,25 +47,15 @@ export class OverlayContainerComponent {
   activateResize() {
     console.log('Call: activateResize');
     this.resizingActive = true;
-    this.mouseMoveHandler = this.renderer.listen(
-      document,
-      'mousemove',
-      (event) => this.onMouseMove(event)
-    );
-
-    this.touchMoveHandler = this.renderer.listen(
-      document,
-      'touchmove',
-      (event) => this.onTouchMove(event)
-    );
+    this.listenForMove();
+    this.listenForMoveEnd();
   }
 
-  @HostListener('window:mouseup', ['$event'])
-  @HostListener('window:touchup', ['$event'])
-  deActivateResize($event: MouseEvent) {
+  deActivateResize(_$event: MouseEvent) {
     console.log('Call: deActivateResize');
     this.resizingActive = false;
-    this.unsubscribeHandlers();
+    this.unsubscribeMoveHandlers();
+    this.unsubscribeEndHandlers();
   }
 
   onMouseMove(event: MouseEvent) {
@@ -86,16 +80,47 @@ export class OverlayContainerComponent {
   }
 
   private calcTopPosition(clientY: number): string {
-    const topPos = Math.max(clientY, this.minTop);
-    return Math.min(topPos, window.innerHeight - this.minTop) + 'px';
+    const topPos = Math.max(clientY, this.minDistTop);
+    return Math.min(topPos, window.innerHeight - this.minDistBottom) + 'px';
   }
 
-  private unsubscribeHandlers() {
-    if (this.mouseMoveHandler) {
-      this.mouseMoveHandler();
+  private unsubscribeMoveHandlers() {
+    this.unsubscribeHandler(this.mouseMoveHandler);
+    this.unsubscribeHandler(this.touchMoveHandler);
+  }
+
+  private unsubscribeEndHandlers() {
+    this.unsubscribeHandler(this.mouseUpHandler);
+    this.unsubscribeHandler(this.touchUpHandler);
+  }
+
+  private unsubscribeHandler(handler: (() => void) | undefined) {
+    if (handler) {
+      handler();
     }
-    if (this.touchMoveHandler) {
-      this.touchMoveHandler();
-    }
+  }
+
+  private listenForMove() {
+    this.mouseMoveHandler = this.renderer.listen(
+      document,
+      'mousemove',
+      (event) => this.onMouseMove(event)
+    );
+
+    this.touchMoveHandler = this.renderer.listen(
+      document,
+      'touchmove',
+      (event) => this.onTouchMove(event)
+    );
+  }
+
+  private listenForMoveEnd() {
+    this.mouseUpHandler = this.renderer.listen(document, 'mouseup', (event) =>
+      this.deActivateResize(event)
+    );
+
+    this.touchUpHandler = this.renderer.listen(document, 'touchup', (event) =>
+      this.deActivateResize(event)
+    );
   }
 }

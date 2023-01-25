@@ -18,6 +18,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { OverlayContainerComponent } from './overlay-container/overlay-container.component';
 import { NgxRerenderModule } from 'ngx-rerender';
 import { ContainerItemComponent } from './container-item/container-item.component';
+import { ButtonBarComponent } from './button-bar/button-bar.component';
+import { SavedVocabContainerComponent } from './saved-vocab-container/saved-vocab-container.component';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -27,7 +29,6 @@ const dbConfig: DBConfig = {
       store: 'vocab',
       storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
-        /*TODO create based on vocab model */
         {
           name: 'expression',
           keypath: 'expression',
@@ -50,6 +51,8 @@ const dbConfig: DBConfig = {
     CaptureImageComponent,
     OverlayContainerComponent,
     ContainerItemComponent,
+    ButtonBarComponent,
+    SavedVocabContainerComponent,
   ],
   imports: [
     BrowserModule,

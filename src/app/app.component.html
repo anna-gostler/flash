@@ -1,14 +1,23 @@
 <div id="app-container">
   <app-capture-image
+    *ngIf="showCamera"
     id="app-container-item-top"
     #contentTop
   ></app-capture-image>
 
-  <app-overlay-container (cancel)="onCancel()" *ngIf="showContainer">
+  <app-overlay-container
+    (cancel)="onCancel()"
+    *ngIf="showContainer && showCamera"
+  >
     <app-vocab-card
       id="app-container-item-bottom"
       #contentBottom
     ></app-vocab-card>
   </app-overlay-container>
+
+  <app-saved-vocab-container *ngIf="showSaved" id="saved-vocab">
+  </app-saved-vocab-container>
+
+  <app-button-bar [config]="buttonBarConfig" id="main-menu"></app-button-bar>
 </div>
 <router-outlet></router-outlet>

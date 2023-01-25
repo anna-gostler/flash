@@ -13,7 +13,7 @@ export class AnkiService {
 
     const options = {
       fieldSeparator: ';',
-      quoteStrings: '"',
+      quoteStrings: ' ',
       decimalSeparator: '.',
       showLabels: true,
       showTitle: false,
@@ -37,7 +37,7 @@ export class AnkiService {
             .concat(' ')
             .concat(
               this.clean(vocabEntry.meanings?.join(' '))
-                .concat(' ')
+                .concat('<br>')
                 .concat(this.clean(vocabEntry.level))
                 .concat(' ')
                 .concat(vocabEntry.common ? 'common' : '')

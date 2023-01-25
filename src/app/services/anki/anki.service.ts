@@ -13,7 +13,7 @@ export class AnkiService {
 
     const options = {
       fieldSeparator: ';',
-      quoteStrings: ' ',
+      quoteStrings: '',
       decimalSeparator: '.',
       showLabels: true,
       showTitle: false,
@@ -34,12 +34,12 @@ export class AnkiService {
         data.push({
           front: vocabEntry.expression,
           back: this.clean(vocabEntry.reading)
-            .concat(' ')
+            .concat('<br>')
             .concat(
-              this.clean(vocabEntry.meanings?.join(' '))
+              this.clean(vocabEntry.meanings?.join(', '))
                 .concat('<br>')
                 .concat(this.clean(vocabEntry.level))
-                .concat(' ')
+                .concat('<br>')
                 .concat(vocabEntry.common ? 'common' : '')
             ),
         });

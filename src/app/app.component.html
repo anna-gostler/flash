@@ -8,11 +8,9 @@
   <app-overlay-container
     (cancel)="onCancel()"
     *ngIf="showContainer && showCamera"
+    id="app-container-item-bottom"
   >
-    <app-vocab-card
-      id="app-container-item-bottom"
-      #contentBottom
-    ></app-vocab-card>
+    <app-vocab-card #contentBottom></app-vocab-card>
   </app-overlay-container>
 
   <app-saved-vocab-container *ngIf="showSaved" id="saved-vocab">

@@ -6,13 +6,15 @@ import { ExportToCsv } from 'export-to-csv';
   providedIn: 'root',
 })
 export class AnkiService {
+  private LINEBREACK = '<br/>';
   constructor() {}
 
   toCSV(vocabEntries: VocabEntry[], fileName: string) {
-    const data = this.toAnkiFormat(vocabEntries);
+    const separator = ',';
+    const data = this.toAnkiFormat(vocabEntries, separator);
 
     const options = {
-      fieldSeparator: ';',
+      fieldSeparator: separator,
       quoteStrings: '',
       decimalSeparator: '.',
       showLabels: true,
@@ -27,21 +29,19 @@ export class AnkiService {
     csvExporter.generateCsv(data);
   }
 
-  toAnkiFormat(vocabEntries: VocabEntry[]) {
+  toAnkiFormat(vocabEntries: VocabEntry[], seperator: string) {
     const data = [];
     for (const vocabEntry of vocabEntries) {
       if (vocabEntry && vocabEntry.expression) {
         data.push({
           front: vocabEntry.expression,
-          back: this.clean(vocabEntry.reading)
-            .concat('<br>')
-            .concat(
-              this.clean(vocabEntry.meanings?.join(', '))
-                .concat('<br>')
-                .concat(this.clean(vocabEntry.level))
-                .concat('<br>')
-                .concat(vocabEntry.common ? 'common' : '')
-            ),
+          back: this.removefromString(this.clean(vocabEntry.reading)
+            .concat(this.LINEBREACK)
+            .concat(this.clean(vocabEntry.meanings?.join('; ')))
+            .concat(this.LINEBREACK)
+            .concat(this.clean(vocabEntry.level))
+            .concat(this.LINEBREACK)
+            .concat(vocabEntry.common ? 'common' : ''), seperator),
         });
       }
     }
@@ -54,5 +54,9 @@ export class AnkiService {
     } else {
       return str;
     }
+  }
+
+  removefromString(str: string, toRemove: string) {
+    return str.replace(toRemove, '');
   }
 }

@@ -35,7 +35,7 @@ export class SavedVocabContainerComponent {
     return [
       {
         id: 'export-to-csv',
-        label: 'Export for Anki',
+        label: 'Export CSV',
         callback: () => {
           this.vocabEntries$.subscribe((entries) => {
             this.ankiService.toCSV(entries, 'anki-vocab');
@@ -46,7 +46,7 @@ export class SavedVocabContainerComponent {
   }
 
   onClick(vocabEntry: VocabEntry) {
-    console.log('clicked', vocabEntry);
+    console.log('Clicked', vocabEntry);
   }
 
   deleteEntry(vocabEntry: VocabEntry) {

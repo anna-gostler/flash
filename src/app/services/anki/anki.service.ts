@@ -15,7 +15,7 @@ export class AnkiService {
 
     const options = {
       fieldSeparator: separator,
-      quoteStrings: '',
+      quoteStrings: '"',
       decimalSeparator: '.',
       showLabels: true,
       showTitle: false,

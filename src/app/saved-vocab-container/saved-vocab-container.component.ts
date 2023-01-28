@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { VocabEntry } from '../models/vocab.model';
 import { DatabaseService } from '../services/database/database.service';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +16,8 @@ export class SavedVocabContainerComponent {
 
   constructor(
     private databaseService: DatabaseService,
-    private ankiService: AnkiService
+    private ankiService: AnkiService,
+    private cdr: ChangeDetectorRef
   ) {
     this.vocabEntries$ = this.databaseService.getAll();
   }
@@ -51,8 +52,12 @@ export class SavedVocabContainerComponent {
 
   deleteEntry(vocabEntry: VocabEntry) {
     if (vocabEntry && vocabEntry.id) {
-      console.log('Delete', vocabEntry);
-      this.databaseService.deleteByKey(vocabEntry.id);
+      console.log('Try to delete', vocabEntry);
+      this.databaseService.deleteByKey(vocabEntry.id).subscribe((entry) => {
+        console.log('Deleted successful:', entry);
+        this.vocabEntries$ = this.databaseService.getAll();
+        this.cdr.detectChanges();
+      });
     } else {
       console.log('Could not delete', vocabEntry);
     }

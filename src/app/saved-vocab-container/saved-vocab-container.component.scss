@@ -11,3 +11,12 @@
   background: cornflowerblue;
   color: white;
 }
+
+.delete-button {
+  position: absolute;
+  right: 0em;
+  top: 0em;
+  button {
+    margin: 0 !important;
+  }
+}

@@ -7,6 +7,6 @@
   <span>{{ vocabEntry.example }}</span>
   <span>{{ vocabEntry.level }}</span>
   <span *ngIf="vocabEntry.common">common</span>
-  <!--<app-button-bar [config]="getButtonBarConfig(vocabEntry)"></app-button-bar>-->
+  <app-button-bar [config]="getButtonBarConfig(vocabEntry)" class="delete-button"></app-button-bar>
 </mat-card>
 

@@ -16,7 +16,7 @@ export class DatabaseService {
     });
   }
 
-  get(key: string) {
+  getByKey(key: string) {
     console.log('get', key);
     return this.dbService.getByKey<VocabEntry>(this.vocabDatabase, key);
   }
@@ -26,7 +26,8 @@ export class DatabaseService {
     return this.dbService.getAll<VocabEntry>(this.vocabDatabase);
   }
 
-  deleteByKey(key: string) {
-    this.dbService.deleteByKey(this.vocabDatabase, key);
+  deleteByKey(key: any) { //TODO figure out how to delete
+    console.log('deleteByKey', key);
+    return this.dbService.deleteByKey(this.vocabDatabase, key);
   }
 }

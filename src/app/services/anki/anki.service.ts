@@ -6,7 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
   providedIn: 'root',
 })
 export class AnkiService {
-  private LINEBREACK = '<br/>';
+  private DIVIDER = '; ';
   constructor() {}
 
   toCSV(vocabEntries: VocabEntry[], fileName: string) {
@@ -29,19 +29,19 @@ export class AnkiService {
     csvExporter.generateCsv(data);
   }
 
-  toAnkiFormat(vocabEntries: VocabEntry[], seperator: string) {
+  toAnkiFormat(vocabEntries: VocabEntry[], separator: string) {
     const data = [];
     for (const vocabEntry of vocabEntries) {
       if (vocabEntry && vocabEntry.expression) {
         data.push({
           front: vocabEntry.expression,
           back: this.removefromString(this.clean(vocabEntry.reading)
-            .concat(this.LINEBREACK)
+            .concat(this.DIVIDER)
             .concat(this.clean(vocabEntry.meanings?.join('; ')))
-            .concat(this.LINEBREACK)
+            .concat(this.DIVIDER)
             .concat(this.clean(vocabEntry.level))
-            .concat(this.LINEBREACK)
-            .concat(vocabEntry.common ? 'common' : ''), seperator),
+            .concat(this.DIVIDER)
+            .concat(vocabEntry.common ? 'common' : ''), separator),
         });
       }
     }

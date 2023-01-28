@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 // @ts-ignore
 import { Annotorious } from '@recogito/annotorious';
-import { Subject } from 'rxjs';
+import { debounceTime, fromEvent, Subject } from 'rxjs';
 import { VocabEntry } from 'src/app/models/vocab.model';
 import { DictionaryService } from '../dictionary/dictionary.service';
 import { OcrService } from '../ocr/ocr.service';
@@ -16,7 +16,6 @@ export class AnnotationService {
   vocabEntrySubject = new Subject<VocabEntry>();
   vocabEntryInProgressSubject = new Subject<boolean>();
   annotationCreated = new Subject<boolean>();
-
 
   constructor(
     private ocrService: OcrService,
@@ -41,33 +40,27 @@ export class AnnotationService {
 
     this.anno = new Annotorious(config);
 
-    // TODO execute also on selection changed
     this.anno.on('createSelection', (selection: any) => {
       console.log('createSelection', selection);
       this.vocabEntryInProgressSubject.next(true);
       this.annotationCreated.next(true);
       this.vocabEntrySubject.next({});
 
-
       const { snippet } = this.anno.getImageSnippetById(selection.id);
-      this.ocrService.ocr(snippet, this.languageCode).then((extractedText) => {
-        this.dictionaryService.getEntry(extractedText).subscribe({
-          next: (v) => {
-            const vocabEntry = this.vocabService.toVocabEntry(v);
-            console.log(vocabEntry);
-            this.vocabEntrySubject.next(vocabEntry);
-          },
-          error: (e) => console.error(e),
-          complete: () => {
-            this.vocabEntryInProgressSubject.next(false);
-          },
-        });
-      });
+      if (snippet) {
+        this.extractVocabEntry(snippet);
+      }
     });
 
-    this.anno.on('changeSelectionTarget', function (selection: any) {
-      console.log('update selection');
+    fromEvent(this.anno, 'changeSelectionTarget').pipe(
+      debounceTime(500) 
+    ).subscribe((selection: any) => {
+      console.log('selection updated');
+      if (selection.source) {
+        this.extractVocabEntry(selection.source);
+      }
     });
+
   }
 
   clearAnnotations(): void {
@@ -77,5 +70,21 @@ export class AnnotationService {
 
   hasAnnotation(): boolean {
     return this.anno && this.anno.getAnnotations().length > 0;
+  }
+
+  private extractVocabEntry(snippet: any) {
+    this.ocrService.ocr(snippet, this.languageCode).then((extractedText) => {
+      this.dictionaryService.getEntry(extractedText).subscribe({
+        next: (v) => {
+          const vocabEntry = this.vocabService.toVocabEntry(v);
+          console.log(vocabEntry);
+          this.vocabEntrySubject.next(vocabEntry);
+        },
+        error: (e) => console.error(e),
+        complete: () => {
+          this.vocabEntryInProgressSubject.next(false);
+        },
+      });
+    });
   }
 }

@@ -1,12 +1,27 @@
 <app-button-bar [config]="getPageButtonBarConfig()"></app-button-bar>
 
-<mat-card *ngFor="let vocabEntry of vocabEntries$ | async" class="saved-vocab-item">
-  <mat-card-title>{{ vocabEntry.expression }}</mat-card-title>
-  <span>{{ vocabEntry.meanings?.join(', ') }}</span>
-  <span>{{ vocabEntry.reading }}</span>
-  <span>{{ vocabEntry.example }}</span>
-  <span>{{ vocabEntry.level }}</span>
-  <span *ngIf="vocabEntry.common">common</span>
-  <app-button-bar [config]="getButtonBarConfig(vocabEntry)" class="delete-button"></app-button-bar>
-</mat-card>
+<div [formGroup]="vocabEntryForm">
+  <mat-card
+    *ngFor="let vocabEntry of vocabEntries$ | async"
+    class="saved-vocab-item"
+  >
+    <mat-card-title>{{ vocabEntry.expression }}</mat-card-title>
+    <span>{{ vocabEntry.meanings?.join(", ") }}</span>
+    <span>{{ vocabEntry.reading }}</span>
+    <span>{{ vocabEntry.example }}</span>
+    <span>{{ vocabEntry.level }}</span>
+    <span *ngIf="vocabEntry.common">common</span>
+    <app-button-bar
+      [config]="getButtonBarConfig(vocabEntry)"
+      class="delete-button"
+    ></app-button-bar>
 
+    <mat-checkbox
+      *ngIf="vocabEntry.id"
+      class="form-control card-select"
+      [formControlName]="vocabEntry.id"
+      [color]="'primary'"
+      (click)="clickedCheckbox(vocabEntry)"
+    ></mat-checkbox>
+  </mat-card>
+</div>

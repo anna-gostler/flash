@@ -6,6 +6,7 @@
       (click)="buttonConfig.callback()"
       [disabled]="buttonConfig.disabled"
       [class.button-main]="buttonConfig.main"
+      [class.small-icon-button]="buttonConfig.icon && !buttonConfig.label && buttonConfig.small"
     >
       <fa-icon *ngIf="buttonConfig.icon" [icon]="buttonConfig.icon"></fa-icon
       >{{ buttonConfig.label }}

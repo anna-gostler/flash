@@ -8,4 +8,5 @@ export interface ButtonConfig {
     disabled?: boolean;
     main?: boolean;
     hide?: boolean;
+    small?: boolean;
 }

@@ -11,9 +11,11 @@ export class DatabaseService {
 
   add(vocabEntry: VocabEntry) {
     console.log('add', vocabEntry);
-    this.dbService.add<VocabEntry>(this.vocabDatabase, vocabEntry).subscribe((key) => {
-      console.log('added key: ', key);
-    });
+    this.dbService
+      .add<VocabEntry>(this.vocabDatabase, vocabEntry)
+      .subscribe((key) => {
+        console.log('added key: ', key);
+      });
   }
 
   getByKey(key: string) {
@@ -26,7 +28,7 @@ export class DatabaseService {
     return this.dbService.getAll<VocabEntry>(this.vocabDatabase);
   }
 
-  deleteByKey(key: any) { //TODO figure out how to delete
+  deleteByKey(key: any) {
     console.log('deleteByKey', key);
     return this.dbService.deleteByKey(this.vocabDatabase, key);
   }

@@ -20,6 +20,8 @@ import { NgxRerenderModule } from 'ngx-rerender';
 import { ContainerItemComponent } from './container-item/container-item.component';
 import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { SavedVocabContainerComponent } from './saved-vocab-container/saved-vocab-container.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -69,6 +71,8 @@ const dbConfig: DBConfig = {
     FormsModule,
     MatProgressSpinnerModule,
     NgxRerenderModule,
+    MatCheckboxModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

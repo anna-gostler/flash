@@ -32,6 +32,7 @@ export class VocabCardComponent extends ContainerItemComponent {
   onSave() {
     console.log('onSave', this.vocabEntry);
     this.databaseService.add(this.vocabEntry);
+    this.vocabEntry = {};
   }
 
   onCancelClick() {

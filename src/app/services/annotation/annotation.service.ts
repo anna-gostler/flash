@@ -47,12 +47,16 @@ export class AnnotationService {
       this.vocabEntrySubject.next({});
 
       try {
-        const { snippet } = this.anno.getImageSnippetById(selection.id);
-        if (snippet) {
+        const result = this.anno.getImageSnippetById(selection.id);
+        if (result) {
+          const { snippet } = result;
           this.extractVocabEntry(snippet);
         }
       } catch (e) {
-        console.log('Error occured while trying to extract vocab entry from snippet', e);
+        console.log(
+          'Error occured while trying to extract vocab entry from snippet',
+          e
+        );
       }
     });
 

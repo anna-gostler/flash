@@ -31,3 +31,9 @@ body {
     border-color: white !important;
   }
 }
+
+.top-button-bar {
+  .button-container {
+    justify-content: flex-end !important;
+  }
+}

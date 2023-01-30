@@ -1,5 +1,6 @@
 <mat-card class="vocab-card-container slider-item">
   <mat-spinner *ngIf="loading" class="progress-spinner"></mat-spinner>
+  <app-button-bar [config]="buttonTopBarConfig" class="top-button-bar"></app-button-bar>
 
   <div class="form-row-container slider-item">
     <mat-form-field class="slider-item">
@@ -50,7 +51,7 @@
     <mat-chip-option *ngIf="vocabEntry?.common">Common</mat-chip-option>
   </mat-chip-listbox>
 
-  <app-button-bar [config]="buttonBarConfig"></app-button-bar>
+  <app-button-bar [config]="buttonBottomBarConfig" class="bottom-button-bar"></app-button-bar>
 
 
 </mat-card>

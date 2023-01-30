@@ -11,6 +11,7 @@
   overflow: auto;
   padding: 0.5em;
   margin-bottom: 0.5em;
+  overflow-x: hidden;
 }
 
 .tag-container {
@@ -24,6 +25,10 @@
   z-index: 100;
 }
 
-app-button-bar {
-  bottom: 4em;
+.bottom-button-bar {
+  position: absolute;
+  bottom: 0;
+  background: white;
+  width: 100%;
+  box-shadow: 0px 0 10px rgb(0 0 0 / 10%);
 }

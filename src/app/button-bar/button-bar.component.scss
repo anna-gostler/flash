@@ -20,4 +20,14 @@
     min-height: 2em;
     height:2em;
   }
+
+  .round-button {
+    border-radius: 3em !important;
+    width: 4em;
+    height: 4em;
+    min-width: 4em;
+    min-height: 4em;
+    color: white;
+    background: rgba(0,0,0, 0.5);
+  }
 }

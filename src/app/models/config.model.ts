@@ -9,4 +9,5 @@ export interface ButtonConfig {
     main?: boolean;
     hide?: boolean;
     small?: boolean;
+    round?: boolean;
 }

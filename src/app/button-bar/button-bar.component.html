@@ -7,6 +7,7 @@
       [disabled]="buttonConfig.disabled"
       [class.button-main]="buttonConfig.main"
       [class.small-icon-button]="buttonConfig.icon && !buttonConfig.label && buttonConfig.small"
+      [class.round-button]="buttonConfig.round"
     >
       <fa-icon *ngIf="buttonConfig.icon" [icon]="buttonConfig.icon"></fa-icon
       >{{ buttonConfig.label }}

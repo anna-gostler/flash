@@ -46,21 +46,24 @@ export class AnnotationService {
       this.annotationCreated.next(true);
       this.vocabEntrySubject.next({});
 
-      const { snippet } = this.anno.getImageSnippetById(selection.id);
-      if (snippet) {
-        this.extractVocabEntry(snippet);
+      try {
+        const { snippet } = this.anno.getImageSnippetById(selection.id);
+        if (snippet) {
+          this.extractVocabEntry(snippet);
+        }
+      } catch (e) {
+        console.log('Error occured while trying to extract vocab entry from snippet', e);
       }
     });
 
-    fromEvent(this.anno, 'changeSelectionTarget').pipe(
-      debounceTime(500) 
-    ).subscribe((selection: any) => {
-      console.log('selection updated');
-      if (selection.source) {
-        this.extractVocabEntry(selection.source);
-      }
-    });
-
+    fromEvent(this.anno, 'changeSelectionTarget')
+      .pipe(debounceTime(500))
+      .subscribe((selection: any) => {
+        console.log('selection updated');
+        if (selection.source) {
+          this.extractVocabEntry(selection.source);
+        }
+      });
   }
 
   clearAnnotations(): void {

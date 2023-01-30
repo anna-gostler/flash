@@ -4,6 +4,7 @@ import { ButtonConfig } from '../models/config.model';
 import { VocabEntry } from '../models/vocab.model';
 import { AnnotationService } from '../services/annotation/annotation.service';
 import { DatabaseService } from '../services/database/database.service';
+import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-vocab-card',
@@ -29,7 +30,7 @@ export class VocabCardComponent extends ContainerItemComponent {
   }
 
   onSave() {
-    console.log('onSave');
+    console.log('onSave', this.vocabEntry);
     this.databaseService.add(this.vocabEntry);
   }
 
@@ -39,15 +40,25 @@ export class VocabCardComponent extends ContainerItemComponent {
     this.onCancel();
   }
 
-  get buttonBarConfig(): ButtonConfig[] {
+  get buttonBottomBarConfig(): ButtonConfig[] {
     return [
-      { label: 'Cancel', id: 'Cancel', callback: () => this.onCancelClick() },
       {
         label: 'Save',
-        id: 'Save',
+        id: 'save',
         callback: () => this.onSave(),
         main: true,
         disabled: this.loading,
+      },
+    ];
+  }
+
+  get buttonTopBarConfig(): ButtonConfig[] {
+    return [
+      {
+        icon: fontawesome.faRemove,
+        small: true,
+        id: 'cancel',
+        callback: () => this.onCancelClick(),
       },
     ];
   }

@@ -156,12 +156,14 @@ export class CaptureImageComponent implements AfterViewInit {
         id: 'trigger',
         icon: fontawesome.faCamera,
         hide: !!this.image,
+        round: true,
         callback: () => this.triggerSnapshot(),
       },
       {
         id: 'delete',
         icon: fontawesome.faRedo,
         hide: !this.image,
+        round: true,
         callback: () => this.deleteImage(),
       },
     ];

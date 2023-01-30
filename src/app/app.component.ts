@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AnnotationService } from './services/annotation/annotation.service';
+import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -28,16 +29,16 @@ export class AppComponent {
   get buttonBarConfig() {
     return [
       {
-        label: 'Main',
-        id: 'main',
+        icon: fontawesome.faCamera,
+        id: 'main-menu-camera',
         callback: () => {
           this.showSaved = false;
           this.showCamera = true;
         },
       },
       {
-        label: 'Saved',
-        id: 'saved',
+        icon: fontawesome.faBars,
+        id: 'main-menu-saved',
         callback: () => {
           this.showSaved = true;
           this.showCamera = false;

@@ -6,7 +6,7 @@ import { ExportToCsv } from 'export-to-csv';
   providedIn: 'root',
 })
 export class AnkiService {
-  private DIVIDER = '; ';
+  private DIVIDER = '<br/>';
   constructor() {}
 
   toCSV(vocabEntries: VocabEntry[], fileName: string) {
@@ -35,17 +35,41 @@ export class AnkiService {
       if (vocabEntry && vocabEntry.expression) {
         data.push({
           front: vocabEntry.expression,
-          back: this.removefromString(this.clean(vocabEntry.reading)
-            .concat(this.DIVIDER)
-            .concat(this.clean(vocabEntry.meanings?.join('; ')))
-            .concat(this.DIVIDER)
-            .concat(this.clean(vocabEntry.level))
-            .concat(this.DIVIDER)
-            .concat(vocabEntry.common ? 'common' : ''), separator),
+          back: this.generateBack(vocabEntry, separator),
         });
       }
     }
     return data;
+  }
+
+  private generateBack(vocabEntry: VocabEntry, separator: string) {
+    const info = [];
+
+    for (let [key, value] of Object.entries(vocabEntry)) {
+      if (key === 'id' || key === 'expression') {
+        continue;
+      }
+
+      if (Array.isArray(value)) {
+        value = value.join(this.DIVIDER);
+      }
+      if (key === 'common') {
+        value = value ? 'common' : '';
+      }
+
+      if (typeof value === 'string') {
+        value = this.clean(value);
+        value = this.removefromString(value, separator);
+      }
+
+      if (value !== '') {
+        info.push(value);
+      }
+    }
+
+    console.log(info);
+
+    return info.join(this.DIVIDER);
   }
 
   private clean(str: string | undefined) {

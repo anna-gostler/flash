@@ -48,11 +48,12 @@
   </mat-form-field>
 
   <mat-chip-listbox class="tag-container">
-    <mat-chip-option *ngIf="vocabEntry?.level">{{
+    <mat-chip *ngIf="vocabEntry?.level">{{
       vocabEntry.level
-    }}</mat-chip-option>
-    <mat-chip-option *ngIf="vocabEntry?.common">Common</mat-chip-option>
+    }}</mat-chip>
+    <mat-chip *ngIf="vocabEntry?.common">Common</mat-chip>
   </mat-chip-listbox>
+
   <app-button-bar
     [config]="buttonBottomBarConfig"
     class="bottom-button-bar"

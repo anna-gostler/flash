@@ -1,5 +1,5 @@
 <mat-card class="vocab-card-container slider-item">
-  <mat-spinner *ngIf="loading$ | async" class="progress-spinner"></mat-spinner>
+  <mat-spinner *ngIf="loading" class="progress-spinner"></mat-spinner>
   <app-button-bar
     [config]="buttonTopBarConfig"
     class="top-button-bar"
@@ -12,7 +12,7 @@
         matInput
         type="text"
         [(ngModel)]="vocabEntry.expression"
-        [disabled]="(loading$ | async) || false"
+        [disabled]="loading"
       />
     </mat-form-field>
 
@@ -22,7 +22,7 @@
         matInput
         type="text"
         [(ngModel)]="vocabEntry.reading"
-        [disabled]="(loading$ | async) || false"
+        [disabled]="loading"
       />
     </mat-form-field>
   </div>
@@ -33,8 +33,8 @@
       matInput
       type="text"
       [(ngModel)]="vocabEntry.meanings"
-      [disabled]="(loading$ | async) || false"
-      />
+      [disabled]="loading"
+    />
   </mat-form-field>
 
   <mat-form-field class="slider-item">
@@ -43,14 +43,12 @@
       matInput
       type="text"
       [(ngModel)]="vocabEntry.example"
-      [disabled]="(loading$ | async) || false"
-      />
+      [disabled]="loading"
+    />
   </mat-form-field>
 
   <mat-chip-listbox class="tag-container">
-    <mat-chip *ngIf="vocabEntry?.level">{{
-      vocabEntry.level
-    }}</mat-chip>
+    <mat-chip *ngIf="vocabEntry?.level">{{ vocabEntry.level }}</mat-chip>
     <mat-chip *ngIf="vocabEntry?.common">Common</mat-chip>
   </mat-chip-listbox>
 

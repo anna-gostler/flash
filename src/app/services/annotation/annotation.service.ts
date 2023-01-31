@@ -1,10 +1,14 @@
-import { Injectable, Renderer2 } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 // @ts-ignore
 import { Annotorious } from '@recogito/annotorious';
-import { debounceTime, fromEvent, Subject } from 'rxjs';
+import { debounceTime, fromEvent } from 'rxjs';
 import { VocabEntry } from 'src/app/models/vocab.model';
-import { startLoading, stopLoading } from 'src/app/redux-state/actions/loading.actions';
+import {
+  clearEntry,
+  setEntry,
+  startLoading,
+} from 'src/app/redux-state/actions/currentEntry.action';
 import { DictionaryService } from '../dictionary/dictionary.service';
 import { OcrService } from '../ocr/ocr.service';
 import { VocabService } from '../vocab/vocab.service';
@@ -15,14 +19,12 @@ import { VocabService } from '../vocab/vocab.service';
 export class AnnotationService {
   anno: Annotorious;
   languageCode = 'jpn';
-  vocabEntrySubject = new Subject<VocabEntry>();
-  annotationCreated = new Subject<boolean>();
 
   constructor(
     private ocrService: OcrService,
     private dictionaryService: DictionaryService,
     private vocabService: VocabService,
-    private store: Store<{ loading: boolean }>
+    private store: Store<{ loading: boolean; currentEntry: VocabEntry }>
   ) {}
 
   setUp(idOfImageToBeAnnotated: string): void {
@@ -44,8 +46,7 @@ export class AnnotationService {
 
     this.anno.on('createSelection', (selection: any) => {
       console.log('createSelection', selection);
-      this.annotationCreated.next(true);
-      this.vocabEntrySubject.next({});
+      this.store.dispatch(clearEntry());
       this.store.dispatch(startLoading());
 
       try {
@@ -69,13 +70,15 @@ export class AnnotationService {
         this.store.dispatch(startLoading());
         if (selection.source) {
           this.extractVocabEntry(selection.source);
+        } else {
+          console.log('could not update selection - no selection source');
         }
       });
   }
 
   clearAnnotations(): void {
     this.anno.clearAnnotations();
-    this.annotationCreated.next(false);
+    this.store.dispatch(clearEntry());
   }
 
   hasAnnotation(): boolean {
@@ -86,14 +89,17 @@ export class AnnotationService {
     this.ocrService.ocr(snippet, this.languageCode).then((extractedText) => {
       this.dictionaryService.getEntry(extractedText).subscribe({
         next: (v) => {
-          const vocabEntry = this.vocabService.toVocabEntry(v);
-          console.log(vocabEntry);
-          this.vocabEntrySubject.next(vocabEntry);
+          if (v && v.length > 0) {
+            const vocabEntry = this.vocabService.toVocabEntry(v);
+            console.log(vocabEntry);
+            this.store.dispatch(setEntry({ currentEntry: vocabEntry }));
+          } else {
+            console.log('Could not find entry in dictionary', v);
+            this.store.dispatch(clearEntry());
+          }
         },
         error: (e) => console.error(e),
-        complete: () => {
-          this.store.dispatch(stopLoading());
-        },
+        complete: () => {},
       });
     });
   }

@@ -6,7 +6,7 @@ export interface ButtonConfig {
     callback: () => void;
     label?: string;
     icon?: IconDefinition;
-    disabled?: Observable<boolean>;
+    disabled?: boolean;
     main?: boolean;
     hide?: boolean;
     small?: boolean;

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { AnnotationService } from './services/annotation/annotation.service';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
+import { Store } from '@ngrx/store';
+import { CurrentVocabState } from './redux-state/reducer/currentEntry.reducer';
 
 @Component({
   selector: 'app-root',
@@ -10,21 +11,19 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 export class AppComponent {
   title = 'flash-app';
 
-  showContainer = false;
   showSaved = false;
   showCamera = true;
+  hasEntry = false;
+  loading = false;
 
-  constructor(private annotationService: AnnotationService) {
-    this.annotationService.annotationCreated.subscribe((hasAnnotation) => {
-      this.showContainer = hasAnnotation;
+  constructor(private store: Store<{ currentEntry: CurrentVocabState }>) {
+    this.store.select('currentEntry').subscribe((currentEntry) => {
+      this.hasEntry = currentEntry.hasEntry;
+      this.loading = currentEntry.isLoading;
     });
   }
 
   ngOnInit() {}
-
-  onCancel() {
-    this.showContainer = false;
-  }
 
   get buttonBarConfig() {
     return [

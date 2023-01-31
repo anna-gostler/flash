@@ -23,7 +23,7 @@ import { SavedVocabContainerComponent } from './saved-vocab-container/saved-voca
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
-import { loadingReducer } from './redux-state/reducer/loading.reducer';
+import { currentEntryReducer } from './redux-state/reducer/currentEntry.reducer';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -75,7 +75,7 @@ const dbConfig: DBConfig = {
     NgxRerenderModule,
     MatCheckboxModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({ loading: loadingReducer })
+    StoreModule.forRoot({ currentEntry: currentEntryReducer})
   ],
   providers: [],
   bootstrap: [AppComponent],

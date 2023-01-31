@@ -7,11 +7,11 @@ import {
 import { ContainerItemComponent } from '../container-item/container-item.component';
 import { ButtonConfig } from '../models/config.model';
 import { VocabEntry } from '../models/vocab.model';
-import { AnnotationService } from '../services/annotation/annotation.service';
 import { DatabaseService } from '../services/database/database.service';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
-import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { clearEntry } from '../redux-state/actions/currentEntry.action';
+import { CurrentVocabState } from '../redux-state/reducer/currentEntry.reducer';
 
 @Component({
   selector: 'app-vocab-card',
@@ -20,47 +20,47 @@ import { Store } from '@ngrx/store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VocabCardComponent extends ContainerItemComponent {
-  @Input() vocabEntry: VocabEntry = {};
-  loading$: Observable<boolean>;
+  loading: boolean = false;
+  vocabEntry: VocabEntry = {};
+  hasEntry: boolean = false;
 
   constructor(
-    private annotationService: AnnotationService,
     private databaseService: DatabaseService,
     private cdr: ChangeDetectorRef,
-    private store: Store<{ loading: boolean }>
+    private store: Store<{ currentEntry: CurrentVocabState }>
   ) {
     super();
-    this.annotationService.vocabEntrySubject.subscribe((entry) => {
-      this.vocabEntry = entry;
-      this.cdr.detectChanges();
+    this.store.select('currentEntry').subscribe((entry) => {
+      console.log('update entry', entry);
+      this.vocabEntry = entry.currentEntry;
+      this.hasEntry = entry.hasEntry;
+      this.loading = entry.isLoading;
+      this.cdr.markForCheck();
     });
-
-    this.loading$ = this.store.select('loading');
   }
 
   onSave() {
-    console.log('onSave', this.vocabEntry);
+    console.log('onSave');
     this.databaseService.add(this.vocabEntry);
-    this.vocabEntry = {};
+    this.store.dispatch(clearEntry());
   }
 
   onCancelClick() {
     console.log('onCancelClick');
-    this.vocabEntry = {};
+    this.store.dispatch(clearEntry());
     this.onCancel();
   }
 
   get buttonBottomBarConfig(): ButtonConfig[] {
-      return [
-        {
-          label: 'Save',
-          id: 'save',
-          callback: () => this.onSave(),
-          main: true,
-          disabled: this.loading$ || !this.vocabEntry.expression,
-        }
-      ];
-
+    return [
+      {
+        label: 'Save',
+        id: 'save',
+        callback: () => this.onSave(),
+        main: true,
+        disabled: this.loading || !this.hasEntry,
+      },
+    ];
   }
 
   get buttonTopBarConfig(): ButtonConfig[] {

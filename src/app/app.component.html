@@ -6,8 +6,7 @@
   ></app-capture-image>
 
   <app-overlay-container
-    (cancel)="onCancel()"
-    *ngIf="showContainer && showCamera"
+    *ngIf="showCamera && hasEntry || loading"
     id="app-container-item-bottom"
   >
     <app-vocab-card  #contentBottom></app-vocab-card>

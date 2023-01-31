@@ -6,7 +6,7 @@
       mat-stroked-button
       mat-button
       (click)="buttonConfig.callback()"
-      [disabled]="buttonConfig.disabled | async"
+      [disabled]="buttonConfig.disabled"
       [class.button-main]="buttonConfig.main"
       [class.small-icon-button]="
         buttonConfig.icon && !buttonConfig.label && buttonConfig.small

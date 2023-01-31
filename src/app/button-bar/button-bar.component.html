@@ -1,13 +1,16 @@
 <div class="button-container">
   <ng-container *ngFor="let buttonConfig of config">
-    <button class="button-container-button"
+    <button
+      class="button-container-button"
       *ngIf="!buttonConfig.hide"
       mat-stroked-button
       mat-button
       (click)="buttonConfig.callback()"
-      [disabled]="buttonConfig.disabled"
+      [disabled]="buttonConfig.disabled | async"
       [class.button-main]="buttonConfig.main"
-      [class.small-icon-button]="buttonConfig.icon && !buttonConfig.label && buttonConfig.small"
+      [class.small-icon-button]="
+        buttonConfig.icon && !buttonConfig.label && buttonConfig.small
+      "
       [class.round-button]="buttonConfig.round"
     >
       <fa-icon *ngIf="buttonConfig.icon" [icon]="buttonConfig.icon"></fa-icon

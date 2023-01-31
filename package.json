@@ -28,6 +28,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
     "@fortawesome/free-solid-svg-icons": "^6.2.1",
     "@ngnjs/net": "^1.0.0-alpha.24",
+    "@ngrx/store": "^15.2.1",
     "@recogito/annotorious": "^2.7.9",
     "@types/tesseract.js": "^2.0.0",
     "cors": "^2.8.5",

@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+} from '@angular/core';
 import { ContainerItemComponent } from '../container-item/container-item.component';
 import { ButtonConfig } from '../models/config.model';
 import { VocabEntry } from '../models/vocab.model';
 import { AnnotationService } from '../services/annotation/annotation.service';
 import { DatabaseService } from '../services/database/database.service';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-vocab-card',
@@ -14,12 +21,13 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons';
 })
 export class VocabCardComponent extends ContainerItemComponent {
   @Input() vocabEntry: VocabEntry = {};
-  @Input() loading: boolean = false;
+  loading$: Observable<boolean>;
 
   constructor(
     private annotationService: AnnotationService,
     private databaseService: DatabaseService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private store: Store<{ loading: boolean }>
   ) {
     super();
     this.annotationService.vocabEntrySubject.subscribe((entry) => {
@@ -27,10 +35,7 @@ export class VocabCardComponent extends ContainerItemComponent {
       this.cdr.detectChanges();
     });
 
-    this.annotationService.vocabEntryInProgressSubject.subscribe((loading) => {
-      this.loading = loading;
-      this.cdr.detectChanges();
-    });
+    this.loading$ = this.store.select('loading');
   }
 
   onSave() {
@@ -46,15 +51,16 @@ export class VocabCardComponent extends ContainerItemComponent {
   }
 
   get buttonBottomBarConfig(): ButtonConfig[] {
-    return [
-      {
-        label: 'Save',
-        id: 'save',
-        callback: () => this.onSave(),
-        main: true,
-        disabled: this.loading || !this.vocabEntry.expression,
-      },
-    ];
+      return [
+        {
+          label: 'Save',
+          id: 'save',
+          callback: () => this.onSave(),
+          main: true,
+          disabled: this.loading$ || !this.vocabEntry.expression,
+        }
+      ];
+
   }
 
   get buttonTopBarConfig(): ButtonConfig[] {

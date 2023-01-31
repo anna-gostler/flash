@@ -22,6 +22,8 @@ import { ButtonBarComponent } from './button-bar/button-bar.component';
 import { SavedVocabContainerComponent } from './saved-vocab-container/saved-vocab-container.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
+import { loadingReducer } from './redux-state/reducer/loading.reducer';
 
 const dbConfig: DBConfig = {
   name: 'vocab',
@@ -72,7 +74,8 @@ const dbConfig: DBConfig = {
     MatProgressSpinnerModule,
     NgxRerenderModule,
     MatCheckboxModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot({ loading: loadingReducer })
   ],
   providers: [],
   bootstrap: [AppComponent],

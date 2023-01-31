@@ -3,6 +3,7 @@
     <button class="button-container-button"
       *ngIf="!buttonConfig.hide"
       mat-stroked-button
+      mat-button
       (click)="buttonConfig.callback()"
       [disabled]="buttonConfig.disabled"
       [class.button-main]="buttonConfig.main"

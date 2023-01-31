@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { ContainerItemComponent } from '../container-item/container-item.component';
 import { ButtonConfig } from '../models/config.model';
 import { VocabEntry } from '../models/vocab.model';
@@ -10,6 +10,7 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons';
   selector: 'app-vocab-card',
   templateUrl: './vocab-card.component.html',
   styleUrls: ['./vocab-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VocabCardComponent extends ContainerItemComponent {
   @Input() vocabEntry: VocabEntry = {};
@@ -17,15 +18,18 @@ export class VocabCardComponent extends ContainerItemComponent {
 
   constructor(
     private annotationService: AnnotationService,
-    private databaseService: DatabaseService
+    private databaseService: DatabaseService,
+    private cdr: ChangeDetectorRef
   ) {
     super();
     this.annotationService.vocabEntrySubject.subscribe((entry) => {
       this.vocabEntry = entry;
+      this.cdr.detectChanges();
     });
 
     this.annotationService.vocabEntryInProgressSubject.subscribe((loading) => {
       this.loading = loading;
+      this.cdr.detectChanges();
     });
   }
 
@@ -48,7 +52,7 @@ export class VocabCardComponent extends ContainerItemComponent {
         id: 'save',
         callback: () => this.onSave(),
         main: true,
-        disabled: this.loading,
+        disabled: this.loading || !this.vocabEntry.expression,
       },
     ];
   }
